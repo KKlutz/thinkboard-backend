@@ -6,7 +6,6 @@ import path from "path";
 import notesRoute from "./routes/notes.route.js";
 import mongoClient from "./config/mongo.client.js";
 import { rateLimiter } from "./middleware/ratelimiter.js";
-import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 5050;
