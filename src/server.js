@@ -40,11 +40,13 @@ app.use((req, _, next) => {
   next(); // next() to pass control to the next middleware or route handler
 });
 
+// Redirect root endpoint to /api/notes endpoint
+app.get("/", (_, res) => {
+  res.redirect("/api/notes");
+});
+
 // Route handlers for notes
 app.use("/api/notes", notesRoute);
-app.get("/", (_, res) => {
-  res.status(200).send("Belum ke redirect ke api/notes.");
-});
 
 if (process.env.NODE_ENV === "production") {
   // Configure to use react application from "dis" as static assets
