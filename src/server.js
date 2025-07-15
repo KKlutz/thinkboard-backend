@@ -6,6 +6,7 @@ import path from "path";
 import notesRoute from "./routes/notes.route.js";
 import mongoClient from "./config/mongo.client.js";
 import { rateLimiter } from "./middleware/ratelimiter.js";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -24,6 +25,12 @@ if (process.env.NODE_ENV !== "production") {
 // This is necessary to handle JSON data sent in requests, such as when creating or updating notes
 app.use(express.json());
 app.use(rateLimiter);
+app.use(
+  cors({
+    origin: "https://thinkboard-app-phi.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 
 // Example of simple middleware
 app.use((req, _, next) => {
