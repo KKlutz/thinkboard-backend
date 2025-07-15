@@ -41,10 +41,10 @@ app.use((req, _, next) => {
 });
 
 // Route handlers for notes
-app.use("/", (_, res) => {
+app.use("/api/notes", notesRoute);
+app.get("/", (_, res) => {
   res.status(200).send("Belum ke redirect ke api/notes.");
 });
-app.use("/api/notes", notesRoute);
 
 if (process.env.NODE_ENV === "production") {
   // Configure to use react application from "dis" as static assets
