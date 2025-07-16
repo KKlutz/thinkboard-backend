@@ -1,9 +1,23 @@
 import notes from "../models/note.model.js";
 
+/**
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
+
 // All notes controller functions
 export const getAllNotes = async (req, res) => {
+  const { sorted = "updatedAt", order = "desc", limit = 9, page = 1 } = req.query;
+  const orderBy = order === "asc" ? 1 : -1;
+  const noteLimit = parseInt(limit);
+  const skipNote = (parseInt(page) - 1) * noteLimit;
+
   try {
-    const getNotes = await notes.find();
+    const getNotes = await notes
+      .find()
+      .sort({ [sorted]: orderBy })
+      .limit(noteLimit)
+      .skip(skipNote);
 
     console.log("Fetched all notes successfully.");
     res.status(200).json({ message: "All notes fetched.", notes: getNotes });
