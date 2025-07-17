@@ -41,9 +41,11 @@ app.use((req, _, next) => {
 });
 
 // Redirect root endpoint to /api/notes endpoint
-app.get("/", (_, res) => {
-  res.redirect("/api/notes");
-});
+if (process.env.NODE_ENV === "production") {
+  app.get("/", (_, res) => {
+    res.redirect("/api/notes");
+  });
+}
 
 // Route handlers for notes
 app.use("/api/notes", notesRoute);
