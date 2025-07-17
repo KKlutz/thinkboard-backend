@@ -7,7 +7,7 @@ import notes from "../models/note.model.js";
 
 // All notes controller functions
 export const getAllNotes = async (req, res) => {
-  const { sorted = "updatedAt", order = "desc", limit = 9, page = 1 } = req.query;
+  const { sorted = "updatedAt", order = "desc", limit = 6, page = 1 } = req.query;
   const orderBy = order === "asc" ? 1 : -1;
   const noteLimit = parseInt(limit);
   const skipNote = (parseInt(page) - 1) * noteLimit;
@@ -21,9 +21,13 @@ export const getAllNotes = async (req, res) => {
 
     const count = await notes.countDocuments();
     console.log("Fetched all notes successfully.");
-    res
-      .status(200)
-      .json({ message: `${noteLimit} notes fetched.`, notesCount: count, notes: getNotes });
+    res.status(200).json({
+      message: `${getNotes.length} notes fetched.`,
+      currentPage: parseInt(page),
+      totalPages: Math.ceil(count / noteLimit),
+      notesCount: count,
+      notes: getNotes,
+    });
   } catch (error) {
     console.error("Error get all notes: ", error);
     res.status(500).json({ message: error.message });
