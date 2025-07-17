@@ -19,8 +19,11 @@ export const getAllNotes = async (req, res) => {
       .limit(noteLimit)
       .skip(skipNote);
 
+    const count = await notes.countDocuments();
     console.log("Fetched all notes successfully.");
-    res.status(200).json({ message: "All notes fetched.", notes: getNotes });
+    res
+      .status(200)
+      .json({ message: `${noteLimit} notes fetched.`, notesCount: count, notes: getNotes });
   } catch (error) {
     console.error("Error get all notes: ", error);
     res.status(500).json({ message: error.message });
